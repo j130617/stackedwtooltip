@@ -104,11 +104,11 @@ d3.csv("data.csv", function(d, i, columns) {
       .attr("fill", z);
 
   legend.append("text")
-      .attr("x", width - 46)
+      .attr("x", width + 46)
       .attr("y", 9.5)
       .attr("dy", "0.32em")
       .text(function(d) { return d; })
-      .style("text-anchor", "end");
+      .style("text-anchor", "start");
 });
 
   // Prep the tooltip bits, initial display is hidden
