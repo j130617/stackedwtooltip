@@ -9,16 +9,30 @@ body {
 
 </style>
 
-<svg width="700" height="425"></svg>
+<body>
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
-// create the svg
+/*//<svg width="700" height="425"></svg>*/
+  
+// set the dimensions and margins of the graph
+var margin = {top: 40, right: 50, bottom: 50, left: 75},
+    width = 700 - margin.left - margin.right,
+    height = 425 - margin.top - margin.bottom;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+  
+/*  // create the svg
 var svg = d3.select("svg"),
     margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom,
-    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")"); */
 
 // set x scale
 var x = d3.scaleBand()
@@ -49,7 +63,7 @@ d3.csv("data.csv", function(d, i, columns) {
   y.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
   z.domain(keys);
 
-  g.append("g")
+  svg.append("g")
     .selectAll("g")
     .data(d3.stack().keys(keys)(data))
     .enter().append("g")
@@ -71,12 +85,12 @@ d3.csv("data.csv", function(d, i, columns) {
       tooltip.select("text").text((d[1]-d[0]) *100 + " %");
     });
 
-  g.append("g")
+  svg.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
-  g.append("g")
+  svg.append("g")
       .attr("class", "axis")
       .call(d3.axisLeft(y).ticks(10, "%"));
     /*.append("text")
@@ -87,7 +101,7 @@ d3.csv("data.csv", function(d, i, columns) {
       .attr("font-weight", "bold")
       .attr("text-anchor", "start");*/
 
-  var legend = g.append("g")
+  var legend = svg.append("g")
       .attr("font-family", "sans-serif")
       .attr("font-size", 10)
       .attr("text-anchor", "end")
@@ -128,3 +142,4 @@ d3.csv("data.csv", function(d, i, columns) {
     .attr("font-weight", "bold");
 
 </script>
+</body>
